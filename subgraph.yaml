@@ -14,77 +14,20 @@ dataSources:
       apiVersion: 0.0.7
       language: wasm/assemblyscript
       entities:
-        - AdminUpdated
         - Borrow
-        - BorrowTesting1
-        - BorrowTesting2
-        - DaoUpdated
-        - FeeParamsUpdated
-        - Initialized
-        - Liquidation
-        - OracleSet
-        - OwnershipTransferred
-        - Paused
         - PayDebt
-        - RatesUpdated
-        - RepayTesting1
-        - RepayTesting2
         - Supply
-        - TokenForBorrowingAdded
-        - TokenForLendingAdded
-        - Unpaused
-        - Upgraded
-        - UtilizationReset
         - Withdraw
-        - WithdrawTesting
       abis:
         - name: Pool
           file: ./abis/Pool.json
       eventHandlers:
-        - event: AdminUpdated(address)
-          handler: handleAdminUpdated
         - event: Borrow(address,address,uint256,uint256,uint256,bool,int256,uint256)
           handler: handleBorrow
-        - event: BorrowTesting1(address,uint256,uint256)
-          handler: handleBorrowTesting1
-        - event: BorrowTesting2(address,uint256,uint256)
-          handler: handleBorrowTesting2
-        - event: DaoUpdated(address)
-          handler: handleDaoUpdated
-        - event: FeeParamsUpdated(address,uint256,uint256)
-          handler: handleFeeParamsUpdated
-        - event: Initialized(uint64)
-          handler: handleInitialized
-        - event: Liquidation(indexed address,indexed address,indexed address,uint256,address,uint256)
-          handler: handleLiquidation
-        - event: OracleSet(address)
-          handler: handleOracleSet
-        - event: OwnershipTransferred(indexed address,indexed address)
-          handler: handleOwnershipTransferred
-        - event: Paused(address)
-          handler: handlePaused
         - event: PayDebt(address,address,int256,uint256,uint256,uint256)
           handler: handlePayDebt
-        - event: RatesUpdated(indexed address,uint256,uint256,uint256,uint256)
-          handler: handleRatesUpdated
-        - event: RepayTesting1(address,int256)
-          handler: handleRepayTesting1
-        - event: RepayTesting2(address,uint256)
-          handler: handleRepayTesting2
         - event: Supply(address,address,uint256,uint256,uint256)
           handler: handleSupply
-        - event: TokenForBorrowingAdded(string,address,uint256,uint256,uint256)
-          handler: handleTokenForBorrowingAdded
-        - event: TokenForLendingAdded(string,address,uint256,uint256,uint256)
-          handler: handleTokenForLendingAdded
-        - event: Unpaused(address)
-          handler: handleUnpaused
-        - event: Upgraded(indexed address)
-          handler: handleUpgraded
-        - event: UtilizationReset(indexed address)
-          handler: handleUtilizationReset
         - event: Withdraw(address,address,uint256,uint256,uint256,uint256)
           handler: handleWithdraw
-        - event: WithdrawTesting(address,uint256,uint256)
-          handler: handleWithdrawTesting
       file: ./src/pool.ts
