@@ -1,0 +1,232 @@
+type AdminUpdated @entity(immutable: true) {
+  id: Bytes!
+  newAdmin: Bytes! # address
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type Borrow @entity(immutable: true) {
+  id: Bytes!
+  sender: Bytes! # address
+  asset: Bytes! # address
+  amount: BigInt! # uint256
+  amountInDollars: BigInt! # uint256
+  totalAmountAvailableForBorrowInDollars: BigInt! # uint256
+  userPresent: Boolean! # bool
+  userIndex: BigInt! # int256
+  currentUserTokenBorrowedAmount: BigInt! # uint256
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type BorrowTesting1 @entity(immutable: true) {
+  id: Bytes!
+  sender: Bytes! # address
+  amountInDollars: BigInt! # uint256
+  totalAmountAvailableForBorrowInDollars: BigInt! # uint256
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type BorrowTesting2 @entity(immutable: true) {
+  id: Bytes!
+  sender: Bytes! # address
+  balance: BigInt! # uint256
+  amount: BigInt! # uint256
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type DaoUpdated @entity(immutable: true) {
+  id: Bytes!
+  dao: Bytes! # address
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type FeeParamsUpdated @entity(immutable: true) {
+  id: Bytes!
+  feeWallet: Bytes! # address
+  fee: BigInt! # uint256
+  liquidationPenalty: BigInt! # uint256
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type Initialized @entity(immutable: true) {
+  id: Bytes!
+  version: BigInt! # uint64
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type Liquidation @entity(immutable: true) {
+  id: Bytes!
+  liquidator: Bytes! # address
+  borrower: Bytes! # address
+  tokenRepaid: Bytes! # address
+  repayAmount: BigInt! # uint256
+  collateralToken: Bytes! # address
+  collateralSeizedAmount: BigInt! # uint256
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type OracleSet @entity(immutable: true) {
+  id: Bytes!
+  oracle: Bytes! # address
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type OwnershipTransferred @entity(immutable: true) {
+  id: Bytes!
+  previousOwner: Bytes! # address
+  newOwner: Bytes! # address
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type Paused @entity(immutable: true) {
+  id: Bytes!
+  account: Bytes! # address
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type PayDebt @entity(immutable: true) {
+  id: Bytes!
+  sender: Bytes! # address
+  asset: Bytes! # address
+  index: BigInt! # int256
+  tokenAmountBorrowed: BigInt! # uint256
+  totalTokenAmountToCollectFromUser: BigInt! # uint256
+  amountToRepayInUSD: BigInt! # uint256
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type RatesUpdated @entity(immutable: true) {
+  id: Bytes!
+  token: Bytes! # address
+  baseRate: BigInt! # uint256
+  slope1: BigInt! # uint256
+  slope2: BigInt! # uint256
+  kink: BigInt! # uint256
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type RepayTesting1 @entity(immutable: true) {
+  id: Bytes!
+  sender: Bytes! # address
+  index: BigInt! # int256
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type RepayTesting2 @entity(immutable: true) {
+  id: Bytes!
+  sender: Bytes! # address
+  tokenBorrowed: BigInt! # uint256
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type Supply @entity(immutable: true) {
+  id: Bytes!
+  sender: Bytes! # address
+  asset: Bytes! # address
+  amount: BigInt! # uint256
+  amountInUSD: BigInt! # uint256
+  currentUserTokenLentAmount: BigInt! # uint256
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type TokenForBorrowingAdded @entity(immutable: true) {
+  id: Bytes!
+  name: String! # string
+  tokenAddress: Bytes! # address
+  LTV: BigInt! # uint256
+  borrowStableRate: BigInt! # uint256
+  liquidationThreshold: BigInt! # uint256
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type TokenForLendingAdded @entity(immutable: true) {
+  id: Bytes!
+  name: String! # string
+  tokenAddress: Bytes! # address
+  LTV: BigInt! # uint256
+  supplyStableRate: BigInt! # uint256
+  liquidationThreshold: BigInt! # uint256
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type Unpaused @entity(immutable: true) {
+  id: Bytes!
+  account: Bytes! # address
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type Upgraded @entity(immutable: true) {
+  id: Bytes!
+  implementation: Bytes! # address
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type UtilizationReset @entity(immutable: true) {
+  id: Bytes!
+  token: Bytes! # address
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type Withdraw @entity(immutable: true) {
+  id: Bytes!
+  sender: Bytes! # address
+  asset: Bytes! # address
+  amount: BigInt! # uint256
+  amountInUSD: BigInt! # uint256
+  totalAmountToWithdraw: BigInt! # uint256
+  totalInterest: BigInt! # uint256
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type WithdrawTesting @entity(immutable: true) {
+  id: Bytes!
+  sender: Bytes! # address
+  tokentoWithdrawInDollars: BigInt! # uint256
+  availableToWithdraw: BigInt! # uint256
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
