@@ -1,6 +1,6 @@
 specVersion: 0.0.5
 schema:
-  file: ./schema.graphql
+  file: schema.graphql
 dataSources:
   - kind: ethereum
     name: Pool
@@ -20,7 +20,7 @@ dataSources:
         - Withdraw
       abis:
         - name: Pool
-          file: ./abis/Pool.json
+          file: Pool/abis/Pool.json
       eventHandlers:
         - event: Borrow(address,address,uint256,uint256,uint256,bool,int256,uint256)
           handler: handleBorrow
@@ -30,4 +30,4 @@ dataSources:
           handler: handleSupply
         - event: Withdraw(address,address,uint256,uint256,uint256,uint256)
           handler: handleWithdraw
-      file: ./src/pool.ts
+      file: Pool/Pool.wasm
