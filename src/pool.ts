@@ -24,7 +24,7 @@ import {
 const TOKEN_LENDING_CONTRACT = "0x3AF7D19aAeCf142C91FF1A8575A316807a0f611A";
 
 function getMonthYearFromTimestamp(timestamp: number): String {
-  const date = new Date(<i64>timestamp);
+  const date = new Date(<i64>timestamp * 1000);
   const monthNames = [
     "JANUARY",
     "FEBRUARY",
@@ -45,7 +45,7 @@ function getMonthYearFromTimestamp(timestamp: number): String {
 }
 
 function getMonthYearDayFromTimestamp(timestamp: number): String {
-  const date = new Date(<i64>timestamp);
+  const date = new Date(<i64>timestamp * 1000);
   const monthNames = [
     "JANUARY",
     "FEBRUARY",
@@ -134,9 +134,7 @@ export function handleBorrow(event: BorrowEvent): void {
     loans.repaid = BigInt.fromI32(0);
     loans.user = event.params.sender.toHexString();
   } else {
-    loans.borrowed = loans.borrowed.plus(
-      event.params.currentUserTokenBorrowedAmount
-    );
+    loans.borrowed = loans.borrowed.plus(event.params.amount);
   }
 
   let assetTvlOverview = TvlOverview.load(event.params.asset.toHexString());
@@ -150,7 +148,7 @@ export function handleBorrow(event: BorrowEvent): void {
     assetTvlOverview.totalSuppliedinUSD = BigInt.fromI32(0);
   } else {
     assetTvlOverview.totalBorrowed = assetTvlOverview.totalBorrowed.plus(
-      event.params.currentUserTokenBorrowedAmount
+      event.params.amount
     );
     assetTvlOverview.totalBorrowedinUSD = assetTvlOverview.totalBorrowedinUSD.plus(
       event.params.amountInDollars
@@ -286,9 +284,13 @@ export function handleSupply(event: SupplyEvent): void {
   entity.blockTimestamp = event.block.timestamp;
   entity.transactionHash = event.transaction.hash;
 
-  const txMonthYear = getMonthYearFromTimestamp(
-    <f64>event.block.timestamp.toI64()
-  );
+  // const txMonthYear = getMonthYearFromTimestamp(
+  //   <f64>event.block.timestamp.toI64()
+  // );
+  const date = new Date(event.block.timestamp.toI64() * 1000);
+  const year = date.getUTCFullYear();
+  const month = date.getUTCMonth();
+
   const txMonthYearDate = getMonthYearDayFromTimestamp(
     <f64>event.block.timestamp.toI64()
   );
@@ -329,29 +331,35 @@ export function handleSupply(event: SupplyEvent): void {
     );
     userAsset.user = event.params.sender.toHexString();
     userAsset.asset = event.params.asset;
-    userAsset.supplied = event.params.currentUserTokenLentAmount;
+    userAsset.supplied = event.params.amount;
     userAsset.borrowed = BigInt.fromI32(0);
   } else {
-    userAsset.supplied = userAsset.supplied.plus(
-      event.params.currentUserTokenLentAmount
-    );
+    userAsset.supplied = userAsset.supplied.plus(event.params.amount);
   }
 
   let monthlyPortfolio = UserMonthlyPortfolio.load(
-    event.params.sender.toHexString() + txMonthYear
+    event.params.sender.toHexString() + "-" + year.toString()
   );
 
   if (!monthlyPortfolio) {
     monthlyPortfolio = new UserMonthlyPortfolio(
-      event.params.sender.toHexString() + txMonthYear
+      userAsset.user + "-" + year.toString()
     );
-    monthlyPortfolio.supplied = event.params.amountInUSD;
+
     monthlyPortfolio.user = event.params.sender.toHexString();
-  } else {
-    monthlyPortfolio.supplied = monthlyPortfolio.supplied.plus(
-      event.params.amountInUSD
-    );
+    const months = new Array<BigInt>(12);
+    for (let i = 0; i < 12; i++) {
+      months[i] = BigInt.zero();
+    }
+    monthlyPortfolio.portfolio = months;
+    monthlyPortfolio.year = year;
   }
+
+  const supplies = monthlyPortfolio.portfolio;
+  supplies[month] = supplies[month].plus(event.params.amountInUSD);
+
+  monthlyPortfolio.portfolio = supplies;
+  monthlyPortfolio.save();
 
   let dailySupply = DailySupplyTopPerformers.load(
     event.params.asset.toHexString() + txMonthYearDate
@@ -412,12 +420,12 @@ export function handleWithdraw(event: WithdrawEvent): void {
   entity.blockTimestamp = event.block.timestamp;
   entity.transactionHash = event.transaction.hash;
 
-  const txMonthYear = getMonthYearFromTimestamp(
-    <f64>event.block.timestamp.toI64()
-  );
+  const date = new Date(event.block.timestamp.toI64() * 1000);
+  const year = date.getUTCFullYear();
+  const month = date.getUTCMonth();
 
   let monthlyPortfolio = UserMonthlyPortfolio.load(
-    event.params.sender.toHexString() + txMonthYear
+    event.params.sender.toHexString() + "-" + year.toString()
   );
 
   let userAsset = UserAsset.load(
@@ -444,9 +452,12 @@ export function handleWithdraw(event: WithdrawEvent): void {
   }
 
   if (monthlyPortfolio) {
-    monthlyPortfolio.supplied = monthlyPortfolio.supplied.minus(
-      event.params.amountInUSD
-    );
+    const supplies = monthlyPortfolio.portfolio;
+    supplies[month] = supplies[month].minus(event.params.amountInUSD);
+    // monthlyPortfolio.portfolio = monthlyPortfolio.supplied.minus(
+    //   event.params.amountInUSD
+    // );
+    monthlyPortfolio.portfolio = supplies;
     monthlyPortfolio.save();
   }
 

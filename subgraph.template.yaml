@@ -4,11 +4,11 @@ schema:
 dataSources:
   - kind: ethereum
     name: Pool
-    network: arbitrum-one
+    network: {{ network }}
     source:
-      address: "0x0A01b006C471032b3eC816edE297C05C4459D6C7"
+      address: "{{ address }}"
       abi: Pool
-      startBlock: 365202300
+      startBlock: {{ startBlock }}
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.7

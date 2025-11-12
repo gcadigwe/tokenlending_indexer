@@ -4,11 +4,11 @@ schema:
 dataSources:
   - kind: ethereum
     name: Pool
-    network: plume-mainnet
+    network: arbitrum-one
     source:
-      address: "0x3AF7D19aAeCf142C91FF1A8575A316807a0f611A"
+      address: "0x0A01b006C471032b3eC816edE297C05C4459D6C7"
       abi: Pool
-      startBlock: 27365
+      startBlock: 365202300
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.7

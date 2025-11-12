@@ -956,17 +956,30 @@ export class UserMonthlyPortfolio extends Entity {
     this.set("user", Value.fromString(value));
   }
 
-  get supplied(): BigInt {
-    let value = this.get("supplied");
+  get portfolio(): Array<BigInt> {
+    let value = this.get("portfolio");
     if (!value || value.kind == ValueKind.NULL) {
       throw new Error("Cannot return null for a required field.");
     } else {
-      return value.toBigInt();
+      return value.toBigIntArray();
     }
   }
 
-  set supplied(value: BigInt) {
-    this.set("supplied", Value.fromBigInt(value));
+  set portfolio(value: Array<BigInt>) {
+    this.set("portfolio", Value.fromBigIntArray(value));
+  }
+
+  get year(): i32 {
+    let value = this.get("year");
+    if (!value || value.kind == ValueKind.NULL) {
+      return 0;
+    } else {
+      return value.toI32();
+    }
+  }
+
+  set year(value: i32) {
+    this.set("year", Value.fromI32(value));
   }
 }
 

@@ -78,7 +78,8 @@ type User @entity {
 type UserMonthlyPortfolio @entity {
   id: ID!
   user: User!
-  supplied: BigInt!
+  portfolio: [BigInt!]!
+  year: Int!
 }
 
 type Transaction @entity {
